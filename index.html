@@ -74,7 +74,8 @@ input[type="date"]::-webkit-calendar-picker-indicator{opacity:.5}
 .stagger>*:nth-child(8){animation-delay:.54s}
 .stagger>*:nth-child(9){animation-delay:.61s}
 @keyframes staggerIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:480px){.card{padding:2rem 1.5rem}h1{font-size:1.5rem}.food-grid{grid-template-columns:repeat(3,1fr);gap:.5rem}.food-item{padding:.7rem .3rem}.food-emoji{font-size:1.5rem}}
+@media(max-width:480px){.card{padding:1.75rem 1.25rem;max-width:95%}h1{font-size:1.35rem}.subtitle{font-size:.85rem}.food-grid{grid-template-columns:repeat(3,1fr);gap:.5rem}.food-item{padding:.65rem .25rem}.food-emoji{font-size:1.4rem}.btn{font-size:.85rem;padding:.65rem 1.6rem}.btn-primary{padding:.7rem 2rem}.label{font-size:.7rem}input[type="date"],select{font-size:.8rem;padding:.55rem .6rem}.badge{font-size:.75rem;bottom:1rem}.dog-img{width:80px;height:80px}}
+@media(min-width:481px) and (max-width:768px){.card{max-width:90%}h1{font-size:1.5rem}}
 
 /* --- Protection Overlay --- */
 #protect-overlay{display:none;position:fixed;inset:0;z-index:99999;background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem}
@@ -303,7 +304,7 @@ function spawnConfetti(){
 // --- Pages ---
 function homePage(){
   var card=el('div',{className:'card stagger'},
-    el('img',{className:'dog-img',src:'photo 4.jpeg'}),
+    el('img',{className:'dog-img',src:'photo4.jpeg'}),
     el('h1',null,'\u2764\uFE0F Will you go on a date with me? \u2764\uFE0F'),
     el('p',{className:'subtitle'},'\u2764\uFE0F I Really Hope You Say Yes \u2764\uFE0F'),
     el('div',{className:'btn-row',id:'btn-row'},
@@ -325,48 +326,105 @@ function homePage(){
     document.body.appendChild(runningBtn);
     placeholder.style.visibility='hidden';
 
+    // Get actual rendered button size
+    var btnRect=runningBtn.getBoundingClientRect();
+    var btnW=btnRect.width||110;
+    var btnH=btnRect.height||44;
+
     var mouseX=rect.left+rect.width/2;
     var mouseY=rect.top+rect.height/2;
     var btnX=rect.left;
     var btnY=rect.top;
     var targetX=btnX;
     var targetY=btnY;
-    var btnW=110,btnH=44;
-    var fleeRadius=90;
-    var lerpFactor=0.1;
+    var isMobile=window.innerWidth<=768;
+    var fleeRadius=isMobile?120:100;
+    var lerpFactor=isMobile?0.15:0.1;
 
-    function onMove(e){mouseX=e.clientX;mouseY=e.clientY}
-    window.addEventListener('mousemove',onMove);
-    window.addEventListener('touchmove',function(e){if(e.touches.length){mouseX=e.touches[0].clientX;mouseY=e.touches[0].clientY}});
+    // Mouse events (desktop)
+    function onMouseMove(e){mouseX=e.clientX;mouseY=e.clientY}
+    window.addEventListener('mousemove',onMouseMove);
+
+    // Touch events (mobile)
+    var touching=false;
+    function onTouchStart(e){
+      touching=true;
+      if(e.touches.length){
+        mouseX=e.touches[0].clientX;
+        mouseY=e.touches[0].clientY;
+      }
+    }
+    function onTouchMove(e){
+      if(e.touches.length){
+        mouseX=e.touches[0].clientX;
+        mouseY=e.touches[0].clientY;
+      }
+    }
+    function onTouchEnd(){touching=false}
+    window.addEventListener('touchstart',onTouchStart,{passive:true});
+    window.addEventListener('touchmove',onTouchMove,{passive:true});
+    window.addEventListener('touchend',onTouchEnd);
 
     var active=true;
-    noButtonCleanup=function(){active=false;window.removeEventListener('mousemove',onMove);runningBtn.remove()};
+    noButtonCleanup=function(){
+      active=false;
+      window.removeEventListener('mousemove',onMouseMove);
+      window.removeEventListener('touchstart',onTouchStart);
+      window.removeEventListener('touchmove',onTouchMove);
+      window.removeEventListener('touchend',onTouchEnd);
+      if(runningBtn.parentNode)runningBtn.remove();
+    };
+
+    // Recalc button size on resize
+    function onResize(){
+      var r=runningBtn.getBoundingClientRect();
+      if(r.width>0)btnW=r.width;
+      if(r.height>0)btnH=r.height;
+      isMobile=window.innerWidth<=768;
+      fleeRadius=isMobile?120:100;
+      lerpFactor=isMobile?0.15:0.1;
+    }
+    window.addEventListener('resize',onResize);
+
     function animate(){
       if(!active||!document.body.contains(runningBtn))return;
+
+      // Update position from placeholder (in case of scroll/resize)
+      var ph=placeholder.getBoundingClientRect();
+
       var cx=btnX+btnW/2;
       var cy=btnY+btnH/2;
       var dx=cx-mouseX;
       var dy=cy-mouseY;
       var dist=Math.sqrt(dx*dx+dy*dy);
+
       if(dist<fleeRadius){
         var angle=Math.atan2(dy,dx);
-        targetX=mouseX+Math.cos(angle)*(fleeRadius+50)-btnW/2;
-        targetY=mouseY+Math.sin(angle)*(fleeRadius+50)-btnH/2;
+        targetX=mouseX+Math.cos(angle)*(fleeRadius+60)-btnW/2;
+        targetY=mouseY+Math.sin(angle)*(fleeRadius+60)-btnH/2;
       }else{
-        var ph=placeholder.getBoundingClientRect();
-        targetX=ph.left;targetY=ph.top;
+        targetX=ph.left;
+        targetY=ph.top;
       }
-      targetX=Math.max(8,Math.min(window.innerWidth-btnW-8,targetX));
-      targetY=Math.max(8,Math.min(window.innerHeight-btnH-8,targetY));
-      btnX+=(targetX-btnX)*lerpFactor;
-      btnY+=(targetY-btnY)*lerpFactor;
-      runningBtn.style.left=btnX+'px';
-      runningBtn.style.top=btnY+'px';
-      runningBtn.style.opacity=dist<fleeRadius+30?'1':'0.5';
+
+      // Clamp to viewport with padding
+      var pad=isMobile?4:8;
+      targetX=Math.max(pad,Math.min(window.innerWidth-btnW-pad,targetX));
+      targetY=Math.max(pad,Math.min(window.innerHeight-btnH-pad,targetY));
+
+      // Faster escape when close, smoother when far
+      var speed=dist<fleeRadius?(isMobile?0.2:0.18):lerpFactor;
+      btnX+=(targetX-btnX)*speed;
+      btnY+=(targetY-btnY)*speed;
+
+      runningBtn.style.left=Math.round(btnX)+'px';
+      runningBtn.style.top=Math.round(btnY)+'px';
+      runningBtn.style.opacity=dist<fleeRadius+40?'1':'0.4';
+
       requestAnimationFrame(animate);
     }
     requestAnimationFrame(animate);
-  },100);
+  },150);
 
   return card;
 }
