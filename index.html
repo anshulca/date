@@ -235,6 +235,13 @@ var noButtonCleanup=null;
 function navigate(route){
   if(noButtonCleanup){noButtonCleanup();noButtonCleanup=null}
   currentRoute=route;
+  // Save state only when reaching paid page
+  if(route==='/paid'){
+    localStorage.setItem('dateConfirmed','true');
+    localStorage.setItem('selectedTime',selectedTime||'6:00 PM');
+    localStorage.setItem('selectedDate',selectedDate||'');
+    if(selectedFood)localStorage.setItem('selectedFood',selectedFood);
+  }
   render();
 }
 
@@ -570,13 +577,8 @@ function letterPage(){
 }
 
 function paidPage(){
-  localStorage.setItem('dateConfirmed','true');
-  localStorage.setItem('selectedTime',selectedTime||'6:00 PM');
-  localStorage.setItem('selectedDate',selectedDate||'');
-  localStorage.setItem('selectedFood',selectedFood||localStorage.getItem('selectedFood')||'');
-
-  var dateStr=selectedDate?new Date(selectedDate+'T00:00:00').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}):'Not selected';
   var timeStr=selectedTime||'6:00 PM';
+  var dateStr=selectedDate?new Date(selectedDate+'T00:00:00').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}):'Not selected';
   var msg='Hey Anshul! \n\nI accepted your date proposal! \n\nDate: '+dateStr+'\nTime: '+timeStr+'\nDish: '+(selectedFood||'Not selected')+'.\n\nSee you there!\u2764\uFE0F';
 
   return el('div',{className:'card stagger'},
