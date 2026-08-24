@@ -82,6 +82,57 @@ input[type="date"]::-webkit-calendar-picker-indicator{opacity:.5}
 <div id="app"></div>
 
 <script>
+// --- Heart Cursor Trail ---
+(function(){
+  var hearts=['\u2764\uFE0F','\uD83D\uDC95','\uD83D\uDC96','\uD83D\uDC97','\uD83D\uDC98','\uD83D\uDC99','\u2763\uFE0F','\uD83D\uDC8E'];
+  var pool=[];
+  var maxHearts=20;
+  var cooldown=false;
+
+  function createHeart(x,y){
+    if(pool.length>=maxHearts){var old=pool.shift();if(old&&old.parentNode)old.remove()}
+    var h=document.createElement('div');
+    h.textContent=hearts[Math.floor(Math.random()*hearts.length)];
+    h.style.cssText='position:fixed;pointer-events:none;z-index:99998;font-size:'+(10+Math.random()*14)+'px;left:'+x+'px;top:'+y+'px;transition:none;opacity:1;transform:translate(-50%,-50%);';
+    document.body.appendChild(h);
+    pool.push(h);
+
+    var dx=(Math.random()-0.5)*60;
+    var dy=-30-Math.random()*50;
+    var rot=(Math.random()-0.5)*90;
+    var dur=600+Math.random()*400;
+    var start=performance.now();
+
+    function tick(now){
+      var t=Math.min((now-start)/dur,1);
+      h.style.left=(x+dx*t)+'px';
+      h.style.top=(y+dy*t)+'px';
+      h.style.opacity=1-t;
+      h.style.transform='translate(-50%,-50%) scale('+(1-t*0.5)+') rotate('+rot*t+'deg)';
+      if(t<1)requestAnimationFrame(tick);
+      else{h.remove();pool=pool.filter(function(p){return p!==h})}
+    }
+    requestAnimationFrame(tick);
+  }
+
+  document.addEventListener('mousemove',function(e){
+    if(cooldown)return;
+    cooldown=true;
+    setTimeout(function(){cooldown=false},50);
+    createHeart(e.clientX+(Math.random()-0.5)*10,e.clientY+(Math.random()-0.5)*10);
+  });
+
+  document.addEventListener('touchmove',function(e){
+    if(cooldown)return;
+    cooldown=true;
+    setTimeout(function(){cooldown=false},80);
+    var t=e.touches[0];
+    if(t)createHeart(t.clientX+(Math.random()-0.5)*10,t.clientY+(Math.random()-0.5)*10);
+  },{passive:true});
+})();
+</script>
+
+<script>
 // --- Meta Robots (block AI crawlers) ---
 (function(){
   var metas = [
@@ -258,7 +309,6 @@ function homePage(){
     document.body.appendChild(runningBtn);
     placeholder.style.visibility='hidden';
 
-    // Get actual rendered button size
     var btnRect=runningBtn.getBoundingClientRect();
     var btnW=btnRect.width||110;
     var btnH=btnRect.height||44;
@@ -270,17 +320,15 @@ function homePage(){
     var targetX=btnX;
     var targetY=btnY;
     var isMobile=window.innerWidth<=768;
-    var fleeRadius=isMobile?120:100;
-    var lerpFactor=isMobile?0.15:0.1;
+    var fleeRadius=isMobile?140:100;
+    var hasFled=false;
 
     // Mouse events (desktop)
     function onMouseMove(e){mouseX=e.clientX;mouseY=e.clientY}
     window.addEventListener('mousemove',onMouseMove);
 
     // Touch events (mobile)
-    var touching=false;
     function onTouchStart(e){
-      touching=true;
       if(e.touches.length){
         mouseX=e.touches[0].clientX;
         mouseY=e.touches[0].clientY;
@@ -292,7 +340,7 @@ function homePage(){
         mouseY=e.touches[0].clientY;
       }
     }
-    function onTouchEnd(){touching=false}
+    function onTouchEnd(){hasFled=false}
     window.addEventListener('touchstart',onTouchStart,{passive:true});
     window.addEventListener('touchmove',onTouchMove,{passive:true});
     window.addEventListener('touchend',onTouchEnd);
@@ -307,22 +355,8 @@ function homePage(){
       if(runningBtn.parentNode)runningBtn.remove();
     };
 
-    // Recalc button size on resize
-    function onResize(){
-      var r=runningBtn.getBoundingClientRect();
-      if(r.width>0)btnW=r.width;
-      if(r.height>0)btnH=r.height;
-      isMobile=window.innerWidth<=768;
-      fleeRadius=isMobile?120:100;
-      lerpFactor=isMobile?0.15:0.1;
-    }
-    window.addEventListener('resize',onResize);
-
     function animate(){
       if(!active||!document.body.contains(runningBtn))return;
-
-      // Update position from placeholder (in case of scroll/resize)
-      var ph=placeholder.getBoundingClientRect();
 
       var cx=btnX+btnW/2;
       var cy=btnY+btnH/2;
@@ -330,28 +364,25 @@ function homePage(){
       var dy=cy-mouseY;
       var dist=Math.sqrt(dx*dx+dy*dy);
 
-      if(dist<fleeRadius){
+      if(dist<fleeRadius||hasFled){
+        hasFled=true;
         var angle=Math.atan2(dy,dx);
-        targetX=mouseX+Math.cos(angle)*(fleeRadius+60)-btnW/2;
-        targetY=mouseY+Math.sin(angle)*(fleeRadius+60)-btnH/2;
-      }else{
-        targetX=ph.left;
-        targetY=ph.top;
+        targetX=mouseX+Math.cos(angle)*(fleeRadius+80)-btnW/2;
+        targetY=mouseY+Math.sin(angle)*(fleeRadius+80)-btnH/2;
       }
 
-      // Clamp to viewport with padding
       var pad=isMobile?4:8;
       targetX=Math.max(pad,Math.min(window.innerWidth-btnW-pad,targetX));
       targetY=Math.max(pad,Math.min(window.innerHeight-btnH-pad,targetY));
 
-      // Faster escape when close, smoother when far
-      var speed=dist<fleeRadius?(isMobile?0.2:0.18):lerpFactor;
+      // Fast escape on mobile, smooth on desktop
+      var speed=isMobile?0.25:0.12;
       btnX+=(targetX-btnX)*speed;
       btnY+=(targetY-btnY)*speed;
 
       runningBtn.style.left=Math.round(btnX)+'px';
       runningBtn.style.top=Math.round(btnY)+'px';
-      runningBtn.style.opacity=dist<fleeRadius+40?'1':'0.4';
+      runningBtn.style.opacity='1';
 
       requestAnimationFrame(animate);
     }
@@ -366,7 +397,7 @@ function yayPage(){
   return el('div',{className:'card stagger'},
     el('div',{className:'heart-icon'},'\uD83C\uDF89'),
     el('h1',null,'Wait You Actually Said Yes??'),
-    el('p',{className:'subtitle'},'I Was So Ready For You To Say No \uD83D\uDE33'),
+    el('p',{className:'subtitle'},'Glad You Said Yes, You Won\'t Regret It \uD83D\uDE0D'),
     el('button',{className:'btn btn-primary',on:{click:function(){navigate('/date')}}},'Okay Okay!')
   );
 }
