@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, noodp, notranslate, nopagereadaloud">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="bingbot" content="noindex, nofollow">
+<meta http-equiv="X-Robots-Tag" content="noindex, nofollow, noarchive, nosnippet">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: http:; img-src 'self' https: data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https:;">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, private">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Will You Go On A Date With Me?</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x1F495;</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#faf8f6;--card-bg:#fff;--text:#1a1614;--text-secondary:#7a6f66;--accent:#d4567a;--accent-hover:#c03d63;--accent-glow:rgba(212,86,122,0.25);--accent-soft:#fdf0f3;--accent-medium:#f5d5df;--purple:#9b7ec8;--purple-glow:rgba(155,126,200,0.25);--border:#ede8e4;--radius:16px;--radius-pill:999px;--font-body:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;--font-display:'Fraunces',Georgia,serif}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+#app{position:relative;width:100%;height:100vh;overflow:hidden}
+.page{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1);transform:translateY(12px) scale(.98)}
+.page.active{opacity:1;pointer-events:auto;transform:translateY(0) scale(1)}
+.card{text-align:center;background:var(--card-bg);border-radius:var(--radius);width:100%;max-width:420px;padding:2.5rem 2rem;position:relative;box-shadow:0 1px 3px rgba(0,0,0,.04),0 8px 32px rgba(0,0,0,.06)}
+h1{font-family:var(--font-display);font-size:1.75rem;font-weight:600;line-height:1.25;letter-spacing:-.02em;color:var(--text);margin-bottom:.25rem}
+.subtitle{font-size:.95rem;color:var(--text-secondary);line-height:1.5;margin-bottom:1.5rem}
+.label{font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-secondary);margin-bottom:.5rem;display:block;text-align:left}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;border:none;border-radius:var(--radius-pill);font-family:var(--font-body);font-weight:600;font-size:.95rem;cursor:pointer;transition:background .2s,transform .15s cubic-bezier(.34,1.56,.64,1),box-shadow .2s;outline:none;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.97)!important}
+.btn-primary{background:var(--accent);color:#fff;padding:.75rem 2.25rem;box-shadow:0 2px 12px var(--accent-glow)}
+.btn-primary:hover{background:var(--accent-hover);transform:scale(1.04);box-shadow:0 4px 20px var(--accent-glow)}
+.btn-ghost{background:none;color:var(--text-secondary);padding:.5rem 1rem;font-size:.85rem;font-weight:500}
+.btn-ghost:hover{color:var(--text)}
+.btn-no-running{background:var(--purple);color:#fff;padding:.75rem 1.5rem;font-size:.9rem;box-shadow:0 2px 12px var(--purple-glow);border:none;border-radius:var(--radius-pill);font-family:var(--font-body);font-weight:600;position:fixed;opacity:0;pointer-events:none;transition:none;z-index:100}
+.btn-no-placeholder{background:var(--purple);color:#fff;padding:.75rem 1.5rem;font-size:.9rem;box-shadow:0 2px 12px var(--purple-glow);border:none;border-radius:var(--radius-pill);font-family:var(--font-body);font-weight:600;cursor:pointer;opacity:1}
+.btn-row{display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:1.5rem;position:relative;height:52px}
+.deco{pointer-events:none;position:fixed;font-size:1.2rem;opacity:0;z-index:1;animation:decoFloat 4s ease-in-out infinite}
+.deco.a{animation-name:decoFloatAlt;animation-duration:5s}
+.deco.b{animation-duration:6s}
+@keyframes decoFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-10px) rotate(3deg)}}
+@keyframes decoFloatAlt{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-7px) rotate(2deg)}}
+input[type="date"],select{width:100%;padding:.65rem .8rem;font-family:var(--font-body);font-size:.9rem;color:var(--text);background:var(--bg);border:1.5px solid var(--border);border-radius:10px;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none}
+input[type="date"]:focus,select:focus{border-color:var(--accent)}
+input[type="date"]::-webkit-calendar-picker-indicator{opacity:.5}
+.food-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;margin-top:.75rem}
+.food-item{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.9rem .4rem;background:var(--bg);border:2px solid transparent;border-radius:12px;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+.food-item:hover{border-color:var(--accent);background:var(--accent-soft);transform:scale(1.04)}
+.food-item.selected{border-color:var(--accent);background:var(--accent-soft);transform:scale(1.06);box-shadow:0 2px 12px var(--accent-glow)}
+.food-emoji{font-size:1.8rem;line-height:1}
+.food-label{font-size:.75rem;font-weight:500;color:var(--text-secondary)}
+.confetti-piece{position:fixed;top:-20px;border-radius:2px;animation:confettiDrop linear forwards;pointer-events:none;z-index:200}
+@keyframes confettiDrop{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:.3;transform:translateY(110vh) rotate(720deg)}}
+.heart-icon{width:72px;height:72px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 1.25rem;animation:heartBounce .6s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes heartBounce{0%{transform:scale(0)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+.hearts-row{display:flex;justify-content:center;gap:.3rem;margin:1rem 0}
+.hearts-row span{display:inline-block;animation:heartPop .4s cubic-bezier(.34,1.56,.64,1) forwards;opacity:0}
+@keyframes heartPop{0%{opacity:0;transform:scale(0)}60%{opacity:1;transform:scale(1.2)}100%{opacity:1;transform:scale(1)}}
+.dog-img{width:100px;height:100px;border-radius:50%;object-fit:cover;margin:0 auto 1.25rem;border:3px solid var(--accent-medium);display:block}
+.badge{position:fixed;bottom:1.5rem;left:0;right:0;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;font-family:var(--font-body);z-index:50}
+.badge a{color:var(--text);text-decoration:none;transition:color .2s}
+.badge a:hover{color:var(--accent)}
+.stagger>*{opacity:0;transform:translateY(8px);animation:staggerIn .5s cubic-bezier(.22,1,.36,1) forwards}
+.stagger>*:nth-child(1){animation-delay:.05s}
+.stagger>*:nth-child(2){animation-delay:.12s}
+.stagger>*:nth-child(3){animation-delay:.19s}
+.stagger>*:nth-child(4){animation-delay:.26s}
+.stagger>*:nth-child(5){animation-delay:.33s}
+.stagger>*:nth-child(6){animation-delay:.40s}
+.stagger>*:nth-child(7){animation-delay:.47s}
+.stagger>*:nth-child(8){animation-delay:.54s}
+.stagger>*:nth-child(9){animation-delay:.61s}
+@keyframes staggerIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:480px){.card{padding:2rem 1.5rem}h1{font-size:1.5rem}.food-grid{grid-template-columns:repeat(3,1fr);gap:.5rem}.food-item{padding:.7rem .3rem}.food-emoji{font-size:1.5rem}}
+
+/* --- Protection Overlay --- */
+#protect-overlay{display:none;position:fixed;inset:0;z-index:99999;background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem}
+#protect-overlay.show{display:flex}
+#protect-overlay h2{font-family:var(--font-display);font-size:1.5rem;color:var(--text);margin-bottom:.75rem}
+#protect-overlay p{color:var(--text-secondary);font-size:.9rem;line-height:1.6;max-width:360px;margin-bottom:1.25rem}
+#protect-overlay a{color:var(--accent);font-weight:600;text-decoration:none}
+#protect-overlay button{background:var(--accent);color:#fff;border:none;border-radius:var(--radius-pill);padding:.65rem 1.8rem;font-family:var(--font-body);font-weight:600;font-size:.9rem;cursor:pointer;margin-top:.5rem}
+</style>
+</head>
+<body>
+<div id="protect-overlay">
+<h2>Protected Content</h2>
+<p>This website is the original work of CA Anshul Karwa. For permission to inspect, copy, or reuse, contact the developer.</p>
+<p><a href="https://www.linkedin.com/in/anshulkarwa/" target="_blank">LinkedIn</a> &nbsp;|&nbsp; <a href="#">Site</a></p>
+<button onclick="location.reload()">Reload</button>
+</div>
+<div id="app"></div>
+
+<script>
+// --- Service Worker: Block AI Fetchers ---
+if('serviceWorker' in navigator){
+  var swCode = `
+    self.addEventListener('fetch', function(e) {
+      var url = e.request.url;
+      var ua = (e.request.headers.get('user-agent') || '').toLowerCase();
+      var aiBots = ['gptbot','chatgpt-user','ccbot','anthropic','claude','google-extended','facebookbot','Bytespider','semrush','ahrefs','dotbot','mj12bot','mingpoung','yandex','baidu','applebot','scrapy','httpclient','python','node','curl','wget','go-http','java','okhttp'];
+      var blocked = aiBots.some(function(b){ return ua.includes(b); });
+      if(blocked) {
+        e.respondWith(new Response('Access Denied', {status: 403, statusText: 'Forbidden'}));
+        return;
+      }
+      // Block known AI domains
+      var blockDomains = ['openai','anthropic','cohere','huggingface','replicate'];
+      if(blockDomains.some(function(d){ return url.includes(d); })){
+        e.respondWith(new Response('Access Denied', {status: 403}));
+        return;
+      }
+    });
+  `;
+  var blob = new Blob([swCode], {type: 'application/javascript'});
+  var swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swCode.startsWith('self') ? '' : swUrl).catch(function(){});
+}
+
+// --- Meta Robots Kill Switch ---
+(function(){
+  // Dynamically add more robots meta tags
+  var metas = [
+    {name:'robots',content:'noindex, nofollow, noarchive, nosnippet, noimageindex'},
+    {name:'googlebot',content:'noindex, nofollow, noarchive'},
+    {name:'bingbot',content:'noindex, nofollow'},
+    {name:'slurp',content:'noindex, nofollow'},
+    {name:'duckduckbot',content:'noindex, nofollow'},
+    {name:'baiduspider',content:'noindex, nofollow'},
+    {name:'yandexbot',content:'noindex, nofollow'},
+    {name:'facebot',content:'noindex, nofollow'},
+    {name:'ia_archiver',content:'noindex, nofollow'},
+    {name:'semrushbot',content:'noindex, nofollow'},
+    {name:'ahrefsbots',content:'noindex, nofollow'}
+  ];
+  metas.forEach(function(m){
+    var el = document.createElement('meta');
+    el.name = m.name;
+    el.content = m.content;
+    document.head.appendChild(el);
+  });
+})();
+</script>
+
+<script>
+// --- Protection Layer (Anti-AI + Anti-Inspect) ---
+(function(){
+  // Block keyboard shortcuts
+  document.addEventListener('keydown',function(e){
+    if(e.key==='F12')return(e.preventDefault(),showProtect());
+    if(e.ctrlKey&&e.shiftKey&&['I','J','C','K'].includes(e.key.toUpperCase()))return(e.preventDefault(),showProtect());
+    if(e.ctrlKey&&['U','S','P','A','X'].includes(e.key.toUpperCase()))return(e.preventDefault(),showProtect());
+    if(e.key==='F5'||e.key==='F11')return(e.preventDefault(),showProtect());
+  });
+  // Block right-click
+  document.addEventListener('contextmenu',function(e){e.preventDefault();showProtect()});
+  // Block copy/cut/select
+  document.addEventListener('copy',function(e){e.preventDefault()});
+  document.addEventListener('cut',function(e){e.preventDefault()});
+  document.addEventListener('selectstart',function(e){if(e.target.tagName!=='INPUT'&&e.target.tagName!=='SELECT')e.preventDefault()});
+  // Block drag
+  document.addEventListener('dragstart',function(e){e.preventDefault()});
+  // Block print
+  window.addEventListener('beforeprint',function(e){e.preventDefault()});
+  // Iframe busting
+  if(window.self!==window.top)window.top.location=window.self.location;
+  // Block fetch/XMLHttpRequest to endpoint scanners
+  var origFetch=window.fetch;
+  window.fetch=function(){
+    showProtect();
+    return Promise.reject(new Error('Protected'));
+  };
+  var origOpen=XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open=function(){
+    showProtect();
+    throw new Error('Protected');
+  };
+
+  // DevTools detection
+  var devtoolsOpen=false;
+  var threshold=160;
+  function detectDevTools(){
+    var a=window.outerWidth-window.innerWidth>threshold;
+    var b=window.outerHeight-window.innerHeight>threshold;
+    if(a||b){if(!devtoolsOpen){devtoolsOpen=true;showProtect()}}
+    else{devtoolsOpen=false;hideProtect()}
+  }
+  setInterval(detectDevTools,1000);
+
+  // Debugger probe
+  var c=0;
+  setInterval(function(){c++;if(c!==c){showProtect();while(true){}}},1000);
+
+  // Console disable
+  console.log=console.warn=console.error=console.info=console.debug=console.table=console.dir=console.dirxml=console.profile=console.profileEnd=console.time=console.timeEnd=console.timeStamp=console.trace=console.assert=console.clear=console.count=console.countReset=console.group=console.groupCollapsed=console.groupEnd=console.memory=function(){
+    showProtect();
+    throw new Error('Protected content');
+  };
+
+  // Disable toString overriding for detection
+  var _toString=Function.prototype.toString;
+  Function.prototype.toString=function(){
+    if(this===console.log||this===console.warn||this===console.error)return'function(){}';
+    return _toString.call(this);
+  };
+
+  function showProtect(){
+    var o=document.getElementById('protect-overlay');
+    if(o)o.classList.add('show');
+  }
+  function hideProtect(){
+    var o=document.getElementById('protect-overlay');
+    if(o)o.classList.remove('show');
+  }
+
+  // Obfuscate window properties from AI scraping
+  Object.defineProperty(window,'__REACT_DEVTOOLS_GLOBAL_HOOK__',{get:function(){return undefined}});
+  Object.defineProperty(window,'__REACT_FIBER__',{get:function(){return undefined}});
+})();
+</script>
+
+<script>
+// --- Router ---
+var routes=['/','/yay','/date','/food','/letter','/paid'];
+var currentRoute=localStorage.getItem('dateConfirmed')==='true'?'/paid':'/';
+var selectedDate=localStorage.getItem('selectedDate')||'';
+var selectedTime=localStorage.getItem('selectedTime')||'';
+var selectedFood=localStorage.getItem('selectedFood')||null;
+var noButtonCleanup=null;
+
+function navigate(route){
+  if(noButtonCleanup){noButtonCleanup();noButtonCleanup=null}
+  currentRoute=route;
+  render();
+}
+
+// --- Helpers ---
+function el(tag,attrs){
+  var e=document.createElement(tag);
+  if(attrs)Object.entries(attrs).forEach(function(pair){
+    var k=pair[0],v=pair[1];
+    if(k==='on')Object.entries(v).forEach(function(ev){e.addEventListener(ev[0],ev[1])});
+    else if(k==='style'&&typeof v==='object')Object.assign(e.style,v);
+    else if(k==='className')e.className=v;
+    else e.setAttribute(k,v);
+  });
+  for(var i=2;i<arguments.length;i++){
+    var c=arguments[i];
+    if(c==null)continue;
+    if(typeof c==='string')e.appendChild(document.createTextNode(c));
+    else if(Array.isArray(c))c.forEach(function(child){if(child)e.appendChild(child)});
+    else e.appendChild(c);
+  }
+  return e;
+}
+
+// --- Decorations ---
+function decoHearts(count,positions){
+  return positions.slice(0,count).map(function(p,i){
+    return el('span',{
+      className:'deco '+(i%3===1?'a':i%3===2?'b':''),
+      style:{top:p[0],left:p[1],animationDelay:p[2]+'s',opacity:'0.45',fontSize:p[3]||'1.2rem'}
+    },'\u2764\uFE0F');
+  });
+}
+
+var homeDeco=[
+  ['7%','4%','0','1.3rem'],['13%','89%','0.5','1rem'],['72%','3%','1','1.1rem'],
+  ['82%','91%','0.3','0.85rem'],['42%','93%','0.8','1.05rem'],['57%','2%','1.2','1rem'],
+  ['23%','6%','0.4','0.8rem'],['91%','46%','0.7','0.95rem'],['4%','52%','1.5','0.9rem']
+];
+var yayDeco=[
+  ['10%','8%','0','1.2rem'],['18%','82%','0.5','1.2rem'],['75%','5%','1','1.2rem'],['80%','88%','0.3','1.2rem'],['45%','91%','0.8','1.2rem'],['60%','3%','1.2','1.2rem']
+];
+var letterDeco=[
+  ['15%','18%','0','1.2rem'],['18%','30%','0.3','1.2rem'],['12%','55%','0.6','1.2rem'],['20%','70%','0.9','1.2rem'],['14%','80%','0.2','1.2rem']
+];
+
+// --- Confetti ---
+function spawnConfetti(){
+  var colors=['#d4567a','#9b7ec8','#7ec8b0','#e8c170','#c87e7e','#7e9ec8','#c8a87e'];
+  for(var i=0;i<50;i++){
+    var piece=el('div',{
+      className:'confetti-piece',
+      style:{
+        left:Math.random()*100+'%',
+        width:(6+Math.random()*8)+'px',
+        height:(6+Math.random()*8)+'px',
+        background:colors[Math.floor(Math.random()*colors.length)],
+        borderRadius:Math.random()>0.5?'50%':'2px',
+        animationDuration:(2.5+Math.random()*2.5)+'s',
+        animationDelay:(Math.random()*1.5)+'s'
+      }
+    });
+    document.body.appendChild(piece);
+    (function(p){setTimeout(function(){p.remove()},6000)})(piece);
+  }
+}
+
+// --- Pages ---
+function homePage(){
+  var card=el('div',{className:'card stagger'},
+    el('img',{className:'dog-img',src:'photo 4.jpeg'}),
+    el('h1',null,'\u2764\uFE0F Will you go on a date with me? \u2764\uFE0F'),
+    el('p',{className:'subtitle'},'\u2764\uFE0F I Really Hope You Say Yes \u2764\uFE0F'),
+    el('div',{className:'btn-row',id:'btn-row'},
+      el('button',{className:'btn btn-primary',on:{click:function(){navigate('/yay')}}},'YES \u2764\uFE0F'),
+      el('button',{className:'btn-no-placeholder',id:'no-placeholder'},'no \uD83D\uDC94')
+    )
+  );
+
+  setTimeout(function(){
+    if(currentRoute!=='/')return;
+    var placeholder=document.getElementById('no-placeholder');
+    var btnRow=document.getElementById('btn-row');
+    if(!placeholder||!btnRow)return;
+
+    var rect=placeholder.getBoundingClientRect();
+    var runningBtn=el('button',{className:'btn-no-running',id:'no-running'},'no \uD83D\uDC94');
+    runningBtn.style.left=rect.left+'px';
+    runningBtn.style.top=rect.top+'px';
+    document.body.appendChild(runningBtn);
+    placeholder.style.visibility='hidden';
+
+    var mouseX=rect.left+rect.width/2;
+    var mouseY=rect.top+rect.height/2;
+    var btnX=rect.left;
+    var btnY=rect.top;
+    var targetX=btnX;
+    var targetY=btnY;
+    var btnW=110,btnH=44;
+    var fleeRadius=90;
+    var lerpFactor=0.1;
+
+    function onMove(e){mouseX=e.clientX;mouseY=e.clientY}
+    window.addEventListener('mousemove',onMove);
+    window.addEventListener('touchmove',function(e){if(e.touches.length){mouseX=e.touches[0].clientX;mouseY=e.touches[0].clientY}});
+
+    var active=true;
+    noButtonCleanup=function(){active=false;window.removeEventListener('mousemove',onMove);runningBtn.remove()};
+    function animate(){
+      if(!active||!document.body.contains(runningBtn))return;
+      var cx=btnX+btnW/2;
+      var cy=btnY+btnH/2;
+      var dx=cx-mouseX;
+      var dy=cy-mouseY;
+      var dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<fleeRadius){
+        var angle=Math.atan2(dy,dx);
+        targetX=mouseX+Math.cos(angle)*(fleeRadius+50)-btnW/2;
+        targetY=mouseY+Math.sin(angle)*(fleeRadius+50)-btnH/2;
+      }else{
+        var ph=placeholder.getBoundingClientRect();
+        targetX=ph.left;targetY=ph.top;
+      }
+      targetX=Math.max(8,Math.min(window.innerWidth-btnW-8,targetX));
+      targetY=Math.max(8,Math.min(window.innerHeight-btnH-8,targetY));
+      btnX+=(targetX-btnX)*lerpFactor;
+      btnY+=(targetY-btnY)*lerpFactor;
+      runningBtn.style.left=btnX+'px';
+      runningBtn.style.top=btnY+'px';
+      runningBtn.style.opacity=dist<fleeRadius+30?'1':'0.5';
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+  },100);
+
+  return card;
+}
+
+function yayPage(){
+  setTimeout(spawnConfetti,200);
+  return el('div',{className:'card stagger'},
+    el('div',{className:'heart-icon'},'\uD83C\uDF89'),
+    el('h1',null,'Wait You Actually Said Yes??'),
+    el('p',{className:'subtitle'},'I Was So Ready For You To Say No \uD83D\uDE33'),
+    el('button',{className:'btn btn-primary',on:{click:function(){navigate('/date')}}},'Okay Okay!')
+  );
+}
+
+function datePage(){
+  var today=new Date();
+  var minDate=today.toISOString().split('T')[0];
+  var maxDateObj=new Date(today);
+  maxDateObj.setDate(maxDateObj.getDate()+7);
+  var maxDate=maxDateObj.toISOString().split('T')[0];
+
+  var allTimes=['12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM',
+    '4:00 PM','4:30 PM','5:00 PM','5:30 PM','6:00 PM','6:30 PM','7:00 PM','7:30 PM','8:00 PM','8:30 PM','9:00 PM'];
+
+  function filterTimes(dateVal){
+    if(!dateVal)return allTimes;
+    var selected=new Date(dateVal+'T00:00:00');
+    var now=new Date();
+    var isToday=selected.toDateString()===now.toDateString();
+    if(!isToday)return allTimes;
+    var ch=now.getHours(),cm=now.getMinutes();
+    return allTimes.filter(function(t){
+      var m=t.match(/(\d+):(\d+)\s*(AM|PM)/i);
+      if(!m)return true;
+      var h=parseInt(m[1]);
+      var mi=parseInt(m[2]);
+      var p=m[3].toUpperCase();
+      if(p==='PM'&&h!==12)h+=12;
+      if(p==='AM'&&h===12)h=0;
+      return h>ch||(h===ch&&mi>cm);
+    });
+  }
+
+  var timeSelect;
+  var dateInput=el('input',{
+    type:'date',min:minDate,max:maxDate,id:'date-input',
+    on:{change:function(e){
+      selectedDate=e.target.value;
+      var filtered=filterTimes(selectedDate);
+      timeSelect.innerHTML='';
+      var def=el('option',{value:''},'Select a time...');
+      timeSelect.appendChild(def);
+      filtered.forEach(function(t){timeSelect.appendChild(el('option',{value:t},t))});
+      updateDateBtn();
+    }}
+  });
+
+  timeSelect=el('select',{id:'time-select'},
+    el('option',{value:''},'Select a time...')
+  );
+  var initialTimes=filterTimes(selectedDate);
+  initialTimes.forEach(function(t){timeSelect.appendChild(el('option',{value:t},t))});
+  timeSelect.addEventListener('change',function(e){selectedTime=e.target.value;updateDateBtn()});
+
+  var nextBtn=el('button',{
+    className:'btn btn-primary',id:'date-next-btn',
+    style:{opacity:'0.5',pointerEvents:'none'},
+    on:{click:function(){navigate('/food')}}
+  },'Set The Date! \u2764\uFE0F');
+
+  function updateDateBtn(){
+    if(selectedDate&&selectedTime){nextBtn.style.opacity='1';nextBtn.style.pointerEvents='auto'}
+  }
+
+  return el('div',{className:'card stagger'},
+    el('p',{style:{fontSize:'1.5rem',marginBottom:'0.5rem'}},'\u2764\uFE0F\u2764\uFE0F'),
+    el('h1',null,'So... When Are You Free?'),
+    el('p',{className:'subtitle'},"Let's Lock It In"),
+    el('label',{className:'label'},'Pick a Day \uD83D\uDCC5'),
+    dateInput,
+    el('div',{style:{height:'0.75rem'}}),
+    el('label',{className:'label'},'What Time? \uD83D\uDD50'),
+    timeSelect,
+    el('div',{style:{marginTop:'1.25rem'}},nextBtn)
+  );
+}
+
+function foodPage(){
+  var foods=[
+    {emoji:'\uD83C\uDF55',label:'Pizza'},
+    {emoji:'\uD83C\uDF63',label:'Sushi'},
+    {emoji:'\uD83C\uDF54',label:'Burgers'},
+    {emoji:'\uD83C\uDF5B',label:'North Indian'},
+    {emoji:'\uD83C\uDF2E',label:'Tacos'},
+    {emoji:'\uD83C\uDF5C',label:'South Indian'}
+  ];
+
+  var grid=el('div',{className:'food-grid',id:'food-grid'});
+  foods.forEach(function(f){
+    var item=el('div',{
+      className:'food-item',
+      on:{click:function(){
+        grid.querySelectorAll('.food-item').forEach(function(i){i.classList.remove('selected')});
+        item.classList.add('selected');
+        selectedFood=f.label;
+        localStorage.setItem('selectedFood',f.label);
+        setTimeout(function(){navigate('/letter')},600);
+      }}
+    },
+      el('span',{className:'food-emoji'},f.emoji),
+      el('span',{className:'food-label'},f.label)
+    );
+    grid.appendChild(item);
+  });
+
+  return el('div',{className:'card stagger'},
+    el('h1',null,'What Are We Feeling? \uD83C\uDF55\uD83C\uDF63'),
+    el('p',{className:'subtitle'},'Pick Your Vibe'),
+    grid
+  );
+}
+
+function letterPage(){
+  var heartsRow=el('div',{className:'hearts-row'});
+  for(var i=0;i<5;i++){
+    var h=el('span',{style:{animationDelay:(i*0.12)+'s',color:'#d4567a',fontSize:'1.4rem'}},'\u2764\uFE0F');
+    heartsRow.appendChild(h);
+  }
+
+  return el('div',{className:'card stagger'},
+    el('h1',{style:{fontSize:'1.35rem',lineHeight:'1.4'}},
+      'Congratulations For Your Date With CA Anshul Karwa.'
+    ),
+    el('p',{style:{color:'var(--text-secondary)',fontSize:'0.95rem',margin:'0.75rem 0 0.5rem',lineHeight:'1.5'}},
+      'I Will Pick You Up At '+(selectedTime||'6:00 PM')+'.'
+    ),
+    el('p',{style:{fontWeight:'600',fontSize:'1rem',margin:'0 0 1rem',color:'var(--text)'}},'Be Ready \uD83D\uDE0D'),
+    heartsRow,
+    el('div',{style:{marginTop:'1rem'}},
+      el('button',{className:'btn btn-primary',on:{click:function(){navigate('/paid')}}},'Ok I Accept \u2764\uFE0F')
+    )
+  );
+}
+
+function paidPage(){
+  localStorage.setItem('dateConfirmed','true');
+  localStorage.setItem('selectedTime',selectedTime||'6:00 PM');
+  localStorage.setItem('selectedDate',selectedDate||'');
+  localStorage.setItem('selectedFood',selectedFood||localStorage.getItem('selectedFood')||'');
+
+  var dateStr=selectedDate?new Date(selectedDate+'T00:00:00').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}):'Not selected';
+  var timeStr=selectedTime||'6:00 PM';
+  var msg='Hey Anshul! \n\nI accepted your date proposal! \n\nDate: '+dateStr+'\nTime: '+timeStr+'\nDish: '+(selectedFood||'Not selected')+'.\n\nSee you there!\u2764\uFE0F';
+
+  return el('div',{className:'card stagger'},
+    el('p',{style:{fontSize:'1.5rem',marginBottom:'0.5rem'}},'\u2764\uFE0F\u2764\uFE0F'),
+    el('h1',null,'Date Confirmed! \uD83C\uDF89'),
+    el('p',{className:'subtitle'},'See You At '+timeStr+'. Be Ready \uD83D\uDE0D'),
+    el('div',{className:'hearts-row',style:{marginTop:'0.5rem'}},
+      el('span',{style:{animationDelay:'0s',color:'#d4567a',fontSize:'1.4rem'}},'\u2764\uFE0F'),
+      el('span',{style:{animationDelay:'0.15s',color:'#d4567a',fontSize:'1.4rem'}},'\u2764\uFE0F'),
+      el('span',{style:{animationDelay:'0.3s',color:'#d4567a',fontSize:'1.4rem'}},'\u2764\uFE0F')
+    ),
+    el('div',{style:{marginTop:'1.5rem',display:'flex',flexDirection:'column',gap:'0.5rem',alignItems:'center'}},
+      el('a',{
+        href:'https://wa.me/917568160006?text='+encodeURIComponent(msg),
+        target:'_blank',
+        rel:'noopener noreferrer',
+        style:{
+          display:'inline-flex',alignItems:'center',justifyContent:'center',gap:'0.4rem',
+          background:'#25D366',color:'#fff',padding:'0.75rem 2.25rem',
+          borderRadius:'var(--radius-pill)',fontWeight:'600',fontSize:'0.95rem',
+          textDecoration:'none',cursor:'pointer',
+          transition:'background 0.2s, transform 0.15s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s',
+          boxShadow:'0 2px 12px rgba(37,211,102,0.3)'
+        }
+      },'\uD83D\uDCAC Send On WhatsApp'),
+      el('button',{
+        className:'btn btn-ghost',
+        style:{fontSize:'0.75rem',opacity:'0.5'},
+        on:{click:function(){localStorage.clear();currentRoute='/';render()}}
+      },'Reset & Start Over')
+    )
+  );
+}
+
+// --- Render ---
+var pageMap={
+  '/':homePage,
+  '/yay':yayPage,
+  '/date':datePage,
+  '/food':foodPage,
+  '/letter':letterPage,
+  '/paid':paidPage
+};
+
+var decoMap={
+  '/':homeDeco,
+  '/yay':yayDeco,
+  '/letter':letterDeco
+};
+
+function render(){
+  var app=document.getElementById('app');
+  app.innerHTML='';
+
+  routes.forEach(function(route){
+    var page=el('div',{
+      className:'page'+(route===currentRoute?' active':''),
+      'data-route':route
+    },pageMap[route]());
+    app.appendChild(page);
+  });
+
+  if(decoMap[currentRoute]){
+    decoHearts(decoMap[currentRoute].length,decoMap[currentRoute]).forEach(function(d){app.appendChild(d)});
+  }
+
+  app.appendChild(el('div',{className:'badge'},
+    el('a',{href:'https://www.linkedin.com/in/anshulkarwa/',target:'_blank',rel:'noopener noreferrer'},'Developed by CA Anshul Karwa')
+  ));
+}
+
+render();
+</script>
+</body>
+</html>
