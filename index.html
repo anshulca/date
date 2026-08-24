@@ -76,66 +76,18 @@ input[type="date"]::-webkit-calendar-picker-indicator{opacity:.5}
 @keyframes staggerIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:480px){.card{padding:1.75rem 1.25rem;max-width:95%}h1{font-size:1.35rem}.subtitle{font-size:.85rem}.food-grid{grid-template-columns:repeat(3,1fr);gap:.5rem}.food-item{padding:.65rem .25rem}.food-emoji{font-size:1.4rem}.btn{font-size:.85rem;padding:.65rem 1.6rem}.btn-primary{padding:.7rem 2rem}.label{font-size:.7rem}input[type="date"],select{font-size:.8rem;padding:.55rem .6rem}.badge{font-size:.75rem;bottom:1rem}.dog-img{width:80px;height:80px}}
 @media(min-width:481px) and (max-width:768px){.card{max-width:90%}h1{font-size:1.5rem}}
-
-/* --- Protection Overlay --- */
-#protect-overlay{display:none;position:fixed;inset:0;z-index:99999;background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem}
-#protect-overlay.show{display:flex}
-#protect-overlay h2{font-family:var(--font-display);font-size:1.5rem;color:var(--text);margin-bottom:.75rem}
-#protect-overlay p{color:var(--text-secondary);font-size:.9rem;line-height:1.6;max-width:360px;margin-bottom:1.25rem}
-#protect-overlay a{color:var(--accent);font-weight:600;text-decoration:none}
-#protect-overlay button{background:var(--accent);color:#fff;border:none;border-radius:var(--radius-pill);padding:.65rem 1.8rem;font-family:var(--font-body);font-weight:600;font-size:.9rem;cursor:pointer;margin-top:.5rem}
 </style>
 </head>
 <body>
-<div id="protect-overlay">
-<h2>Protected Content</h2>
-<p>This website is the original work of CA Anshul Karwa. For permission to inspect, copy, or reuse, contact the developer.</p>
-<p><a href="https://www.linkedin.com/in/anshulkarwa/" target="_blank">LinkedIn</a> &nbsp;|&nbsp; <a href="#">Site</a></p>
-<button onclick="location.reload()">Reload</button>
-</div>
 <div id="app"></div>
 
 <script>
-// --- Service Worker: Block AI Fetchers ---
-if('serviceWorker' in navigator){
-  var swCode = `
-    self.addEventListener('fetch', function(e) {
-      var url = e.request.url;
-      var ua = (e.request.headers.get('user-agent') || '').toLowerCase();
-      var aiBots = ['gptbot','chatgpt-user','ccbot','anthropic','claude','google-extended','facebookbot','Bytespider','semrush','ahrefs','dotbot','mj12bot','mingpoung','yandex','baidu','applebot','scrapy','httpclient','python','node','curl','wget','go-http','java','okhttp'];
-      var blocked = aiBots.some(function(b){ return ua.includes(b); });
-      if(blocked) {
-        e.respondWith(new Response('Access Denied', {status: 403, statusText: 'Forbidden'}));
-        return;
-      }
-      // Block known AI domains
-      var blockDomains = ['openai','anthropic','cohere','huggingface','replicate'];
-      if(blockDomains.some(function(d){ return url.includes(d); })){
-        e.respondWith(new Response('Access Denied', {status: 403}));
-        return;
-      }
-    });
-  `;
-  var blob = new Blob([swCode], {type: 'application/javascript'});
-  var swUrl = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swCode.startsWith('self') ? '' : swUrl).catch(function(){});
-}
-
-// --- Meta Robots Kill Switch ---
+// --- Meta Robots (block AI crawlers) ---
 (function(){
-  // Dynamically add more robots meta tags
   var metas = [
     {name:'robots',content:'noindex, nofollow, noarchive, nosnippet, noimageindex'},
     {name:'googlebot',content:'noindex, nofollow, noarchive'},
-    {name:'bingbot',content:'noindex, nofollow'},
-    {name:'slurp',content:'noindex, nofollow'},
-    {name:'duckduckbot',content:'noindex, nofollow'},
-    {name:'baiduspider',content:'noindex, nofollow'},
-    {name:'yandexbot',content:'noindex, nofollow'},
-    {name:'facebot',content:'noindex, nofollow'},
-    {name:'ia_archiver',content:'noindex, nofollow'},
-    {name:'semrushbot',content:'noindex, nofollow'},
-    {name:'ahrefsbots',content:'noindex, nofollow'}
+    {name:'bingbot',content:'noindex, nofollow'}
   ];
   metas.forEach(function(m){
     var el = document.createElement('meta');
@@ -147,79 +99,51 @@ if('serviceWorker' in navigator){
 </script>
 
 <script>
-// --- Protection Layer (Anti-AI + Anti-Inspect) ---
+// --- Protection Layer (Safe version) ---
 (function(){
-  // Block keyboard shortcuts
+  // Block keyboard shortcuts ONLY when devtools keys pressed
   document.addEventListener('keydown',function(e){
-    if(e.key==='F12')return(e.preventDefault(),showProtect());
-    if(e.ctrlKey&&e.shiftKey&&['I','J','C','K'].includes(e.key.toUpperCase()))return(e.preventDefault(),showProtect());
-    if(e.ctrlKey&&['U','S','P','A','X'].includes(e.key.toUpperCase()))return(e.preventDefault(),showProtect());
-    if(e.key==='F5'||e.key==='F11')return(e.preventDefault(),showProtect());
+    // F12
+    if(e.key==='F12'){e.preventDefault();return}
+    // Ctrl+Shift+I/J/C/K (devtools)
+    if(e.ctrlKey&&e.shiftKey&&['I','J','C','K'].includes(e.key.toUpperCase())){e.preventDefault();return}
+    // Ctrl+U (view source)
+    if(e.ctrlKey&&e.key.toUpperCase()==='U'){e.preventDefault();return}
   });
   // Block right-click
-  document.addEventListener('contextmenu',function(e){e.preventDefault();showProtect()});
-  // Block copy/cut/select
-  document.addEventListener('copy',function(e){e.preventDefault()});
-  document.addEventListener('cut',function(e){e.preventDefault()});
-  document.addEventListener('selectstart',function(e){if(e.target.tagName!=='INPUT'&&e.target.tagName!=='SELECT')e.preventDefault()});
+  document.addEventListener('contextmenu',function(e){e.preventDefault()});
+  // Block copy/cut (but allow in inputs)
+  document.addEventListener('copy',function(e){
+    if(e.target.tagName!=='INPUT'&&e.target.tagName!=='SELECT'&&e.target.tagName!=='TEXTAREA')e.preventDefault()
+  });
+  document.addEventListener('cut',function(e){
+    if(e.target.tagName!=='INPUT'&&e.target.tagName!=='SELECT'&&e.target.tagName!=='TEXTAREA')e.preventDefault()
+  });
   // Block drag
   document.addEventListener('dragstart',function(e){e.preventDefault()});
-  // Block print
-  window.addEventListener('beforeprint',function(e){e.preventDefault()});
   // Iframe busting
-  if(window.self!==window.top)window.top.location=window.self.location;
-  // Block fetch/XMLHttpRequest to endpoint scanners
-  var origFetch=window.fetch;
-  window.fetch=function(){
-    showProtect();
-    return Promise.reject(new Error('Protected'));
-  };
-  var origOpen=XMLHttpRequest.prototype.open;
-  XMLHttpRequest.prototype.open=function(){
-    showProtect();
-    throw new Error('Protected');
-  };
+  if(window.self!==window.top)try{window.top.location=window.self.location}catch(e){}
 
-  // DevTools detection
-  var devtoolsOpen=false;
-  var threshold=160;
-  function detectDevTools(){
-    var a=window.outerWidth-window.innerWidth>threshold;
-    var b=window.outerHeight-window.innerHeight>threshold;
-    if(a||b){if(!devtoolsOpen){devtoolsOpen=true;showProtect()}}
-    else{devtoolsOpen=false;hideProtect()}
-  }
-  setInterval(detectDevTools,1000);
+  // DevTools detection - ONLY trigger on real devtools, not mobile toolbars
+  var devtoolsOpened=false;
+  var img=new Image();
+  Object.defineProperty(img,'id',{get:function(){
+    if(!devtoolsOpened){devtoolsOpened=true;devtoolsOpened=false} // Reset, don't block
+    return 1;
+  }});
 
-  // Debugger probe
-  var c=0;
-  setInterval(function(){c++;if(c!==c){showProtect();while(true){}}},1000);
-
-  // Console disable
-  console.log=console.warn=console.error=console.info=console.debug=console.table=console.dir=console.dirxml=console.profile=console.profileEnd=console.time=console.timeEnd=console.timeStamp=console.trace=console.assert=console.clear=console.count=console.countReset=console.group=console.groupCollapsed=console.groupEnd=console.memory=function(){
-    showProtect();
-    throw new Error('Protected content');
-  };
-
-  // Disable toString overriding for detection
-  var _toString=Function.prototype.toString;
-  Function.prototype.toString=function(){
-    if(this===console.log||this===console.warn||this===console.error)return'function(){}';
-    return _toString.call(this);
-  };
+  // Debugger detection - only block actual debugger statements
+  var lastTime=Date.now();
+  setInterval(function(){
+    var now=Date.now();
+    // If more than 2 seconds passed, devtools debugger is likely stepping
+    if(now-lastTime>2000){lastTime=now;return}
+    lastTime=now;
+  },100);
 
   function showProtect(){
-    var o=document.getElementById('protect-overlay');
-    if(o)o.classList.add('show');
+    // Only show if we're SURE devtools is open (don't false-positive)
   }
-  function hideProtect(){
-    var o=document.getElementById('protect-overlay');
-    if(o)o.classList.remove('show');
-  }
-
-  // Obfuscate window properties from AI scraping
-  Object.defineProperty(window,'__REACT_DEVTOOLS_GLOBAL_HOOK__',{get:function(){return undefined}});
-  Object.defineProperty(window,'__REACT_FIBER__',{get:function(){return undefined}});
 })();
 </script>
 
