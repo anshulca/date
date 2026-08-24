@@ -36,7 +36,7 @@ h1{font-family:var(--font-display);font-size:1.75rem;font-weight:600;line-height
 .btn-ghost{background:none;color:var(--text-secondary);padding:.5rem 1rem;font-size:.85rem;font-weight:500}
 .btn-ghost:hover{color:var(--text)}
 .btn-no-running{background:var(--purple);color:#fff;padding:.75rem 1.5rem;font-size:.9rem;box-shadow:0 2px 12px var(--purple-glow);border:none;border-radius:var(--radius-pill);font-family:var(--font-body);font-weight:600;position:fixed;opacity:0;pointer-events:none;transition:none;z-index:100}
-.btn-no-placeholder{background:var(--purple);color:#fff;padding:.75rem 1.5rem;font-size:.9rem;box-shadow:0 2px 12px var(--purple-glow);border:none;border-radius:var(--radius-pill);font-family:var(--font-body);font-weight:600;cursor:pointer;opacity:1}
+.btn-no-placeholder{background:var(--purple);color:#fff;padding:.75rem 1.5rem;font-size:.9rem;box-shadow:0 2px 12px var(--purple-glow);border:none;border-radius:var(--radius-pill);font-family:var(--font-body);font-weight:600;cursor:default;opacity:1;pointer-events:none;-webkit-user-select:none;user-select:none}
 .btn-row{display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:1.5rem;position:relative;height:52px}
 .deco{pointer-events:none;position:fixed;font-size:1.2rem;opacity:0;z-index:1;animation:decoFloat 4s ease-in-out infinite}
 .deco.a{animation-name:decoFloatAlt;animation-duration:5s}
@@ -311,7 +311,7 @@ function spawnConfetti(){
 // --- Pages ---
 function homePage(){
   var card=el('div',{className:'card stagger'},
-    el('img',{className:'dog-img',src:'photo4.jpeg'}),
+    el('img',{className:'dog-img',src:'photo4.jpeg',onerror:function(){this.src='photo%204.jpeg'}}),
     el('h1',null,'\u2764\uFE0F Will you go on a date with me? \u2764\uFE0F'),
     el('p',{className:'subtitle'},'\u2764\uFE0F I Really Hope You Say Yes \u2764\uFE0F'),
     el('div',{className:'btn-row',id:'btn-row'},
@@ -327,9 +327,10 @@ function homePage(){
     if(!placeholder||!btnRow)return;
 
     var rect=placeholder.getBoundingClientRect();
-    var runningBtn=el('button',{className:'btn-no-running',id:'no-running'},'no \uD83D\uDC94');
+    var runningBtn=el('button',{className:'btn-no-running',id:'no-running',on:{click:function(e){e.preventDefault();e.stopPropagation();return false}}},'no \uD83D\uDC94');
     runningBtn.style.left=rect.left+'px';
     runningBtn.style.top=rect.top+'px';
+    runningBtn.style.pointerEvents='none';
     document.body.appendChild(runningBtn);
     placeholder.style.visibility='hidden';
 
