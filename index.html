@@ -449,6 +449,7 @@ function yayPage(){
 
 function datePage(){
   var today=new Date();
+  today.setHours(0,0,0,0);
   var minDate=today.toISOString().split('T')[0];
   var maxDateObj=new Date(today);
   maxDateObj.setDate(maxDateObj.getDate()+7);
@@ -476,16 +477,57 @@ function datePage(){
     });
   }
 
+  function isValidDate(dateVal){
+    if(!dateVal)return false;
+    var d=new Date(dateVal+'T00:00:00');
+    var now=new Date();
+    now.setHours(0,0,0,0);
+    var maxD=new Date(now);
+    maxD.setDate(maxD.getDate()+7);
+    return d>=now&&d<=maxD;
+  }
+
+  function isTimeValid(dateVal,timeVal){
+    if(!dateVal||!timeVal)return false;
+    var selected=new Date(dateVal+'T00:00:00');
+    var now=new Date();
+    var isToday=selected.toDateString()===now.toDateString();
+    if(!isToday)return true;
+    var m=timeVal.match(/(\d+):(\d+)\s*(AM|PM)/i);
+    if(!m)return true;
+    var h=parseInt(m[1]);
+    var mi=parseInt(m[2]);
+    var p=m[3].toUpperCase();
+    if(p==='PM'&&h!==12)h+=12;
+    if(p==='AM'&&h===12)h=0;
+    return h>now.getHours()||(h===now.getHours()&&mi>now.getMinutes());
+  }
+
   var timeSelect;
   var dateInput=el('input',{
     type:'date',min:minDate,max:maxDate,id:'date-input',
     on:{change:function(e){
-      selectedDate=e.target.value;
+      var val=e.target.value;
+      // Validate on mobile (some browsers ignore min/max)
+      if(!isValidDate(val)){
+        e.target.value='';
+        selectedDate='';
+        timeSelect.innerHTML='';
+        timeSelect.appendChild(el('option',{value:''},'Select a time...'));
+        allTimes.forEach(function(t){timeSelect.appendChild(el('option',{value:t},t))});
+        updateDateBtn();
+        return;
+      }
+      selectedDate=val;
       var filtered=filterTimes(selectedDate);
       timeSelect.innerHTML='';
       var def=el('option',{value:''},'Select a time...');
       timeSelect.appendChild(def);
       filtered.forEach(function(t){timeSelect.appendChild(el('option',{value:t},t))});
+      // Reset time if it became invalid
+      if(selectedTime&&!isTimeValid(selectedDate,selectedTime)){
+        selectedTime='';
+      }
       updateDateBtn();
     }}
   });
@@ -495,7 +537,18 @@ function datePage(){
   );
   var initialTimes=filterTimes(selectedDate);
   initialTimes.forEach(function(t){timeSelect.appendChild(el('option',{value:t},t))});
-  timeSelect.addEventListener('change',function(e){selectedTime=e.target.value;updateDateBtn()});
+  timeSelect.addEventListener('change',function(e){
+    var val=e.target.value;
+    // Validate time on mobile
+    if(val&&!isTimeValid(selectedDate,val)){
+      e.target.value='';
+      selectedTime='';
+      updateDateBtn();
+      return;
+    }
+    selectedTime=val;
+    updateDateBtn();
+  });
 
   var nextBtn=el('button',{
     className:'btn btn-primary',id:'date-next-btn',
@@ -504,7 +557,11 @@ function datePage(){
   },'Set The Date! \u2764\uFE0F');
 
   function updateDateBtn(){
-    if(selectedDate&&selectedTime){nextBtn.style.opacity='1';nextBtn.style.pointerEvents='auto'}
+    if(selectedDate&&selectedTime&&isValidDate(selectedDate)&&isTimeValid(selectedDate,selectedTime)){
+      nextBtn.style.opacity='1';nextBtn.style.pointerEvents='auto';
+    }else{
+      nextBtn.style.opacity='0.5';nextBtn.style.pointerEvents='none';
+    }
   }
 
   return el('div',{className:'card stagger'},
